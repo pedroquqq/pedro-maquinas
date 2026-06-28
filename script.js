@@ -2,7 +2,7 @@
   "use strict";
 
   // SUBSTITUIR AQUI: texto inicial enviado no WhatsApp.
-  var defaultMessage = "Olá, Pedro Máquinas. Preciso de assistência técnica para minha lava e seca em Praia Grande.";
+  var defaultMessage = "Olá, Pedro Máquinas. Preciso de avaliação para conserto mecânico da minha lava e seca em Praia Grande. Pode me ajudar?";
   var root = document.querySelector(".site-shell");
   var whatsappNumber = root ? root.getAttribute("data-whatsapp") : "5513991275167";
   var whatsappUrl = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(defaultMessage);
