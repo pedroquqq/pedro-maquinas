@@ -1,11 +1,20 @@
 (function () {
   "use strict";
 
-  // SUBSTITUIR AQUI: texto inicial enviado no WhatsApp.
+  // SUBSTITUIR AQUI: texto inicial enviado nos botões gerais do WhatsApp.
   var defaultMessage = "Olá, Pedro Máquinas. Preciso de avaliação para conserto mecânico da minha lava e seca em Praia Grande. Pode me ajudar?";
   var root = document.querySelector(".site-shell");
   var whatsappNumber = root ? root.getAttribute("data-whatsapp") : "5513991275167";
-  var whatsappUrl = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(defaultMessage);
+
+  function buildWhatsappUrl(message) {
+    return "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(message);
+  }
+
+  function getModelText() {
+    var modelInput = document.querySelector("#machine-model");
+    var model = modelInput ? modelInput.value.trim() : "";
+    return model || "não informado";
+  }
 
   function trackWhatsappClick(label) {
     var eventName = "whatsapp_click";
@@ -26,11 +35,25 @@
   }
 
   document.querySelectorAll(".js-whatsapp").forEach(function (button) {
-    button.setAttribute("href", whatsappUrl);
+    button.setAttribute("href", buildWhatsappUrl(defaultMessage));
     button.setAttribute("target", "_blank");
     button.setAttribute("rel", "noopener noreferrer");
     button.addEventListener("click", function () {
       trackWhatsappClick(button.getAttribute("data-event-label"));
+    });
+  });
+
+  document.querySelectorAll(".problem-whatsapp").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var problem = button.getAttribute("data-problem") || "Problema na máquina";
+      var message =
+        "Olá, Pedro Máquinas. Preciso de atendimento em Praia Grande.\n" +
+        "Problema: " + problem + ".\n" +
+        "Modelo da máquina: " + getModelText() + ".\n" +
+        "Pode me passar uma orientação e orçamento?";
+
+      trackWhatsappClick("problem_" + problem.toLowerCase().replace(/\s+/g, "_"));
+      window.open(buildWhatsappUrl(message), "_blank", "noopener,noreferrer");
     });
   });
 
